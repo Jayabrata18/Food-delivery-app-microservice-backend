@@ -2,11 +2,7 @@
 /dist
 /node_modules
 /build
-http-api-gateway
-orders
-postgres-data
-restaurants
-users
+
 # Logs
 logs
 *.log
