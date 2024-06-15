@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./apps/http-api-gateway/Dockerfile
       target: development
-    command: npm run start:dev
+    command: nodemon --watch src --exec npm run start:dev
     # env_file:
     #   - ./apps/http-api-gateway/.env
     # depends_on:
@@ -20,7 +20,7 @@ services:
       context: .
       dockerfile: ./apps/users/Dockerfile
       target: development
-    command: npm run start:dev
+    command: nodemon --watch src --exec npm run start:dev
     # env_file:
     #   - ./apps/users/.env
     volumes:
