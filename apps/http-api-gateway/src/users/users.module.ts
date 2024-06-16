@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { NatsClientModule } from 'libs/common/nats-client/nats-client.module';
+import { NatsClientModule } from '@app/common/nats-client/nats-client.module';
 import { UsersController } from './users.controller';
 
 @Module({

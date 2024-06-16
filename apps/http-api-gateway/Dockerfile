@@ -7,12 +7,18 @@ RUN npm install -g @nestjs/cli
 
 
 COPY package*.json ./
+COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
-RUN yarn install
+RUN npm install --loglevel verbose
 
-COPY . .
+# COPY . .
+COPY apps/http-api-gateway apps/http-api-gateway
+COPY libs libs
 
-# RUN yarn run build
+RUN cd apps/http-api-gateway && npm install --loglevel verbose
+
+RUN npm run build http-api-gateway --loglevel verbose
 
 FROM node:18 As production
 
@@ -23,7 +29,7 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 
-RUN yarn install --only=production
+RUN npm install --only=production --loglevel verbose
 
 COPY . .
 

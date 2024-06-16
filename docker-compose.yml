@@ -6,8 +6,8 @@ services:
       dockerfile: ./apps/http-api-gateway/Dockerfile
       target: development
     command: npm run start:dev http-api-gateway
-    # env_file:
-    #   - ./apps/http-api-gateway/.env
+    env_file:
+      - ./apps/http-api-gateway/.env
     # depends_on:
     #   - postgres    
     ports:
@@ -24,11 +24,13 @@ services:
       dockerfile: ./apps/users/Dockerfile
       target: development
     command: npm run start:dev users
-    # env_file:
-    #   - ./apps/users/.env
+    env_file:
+      - ./apps/users/.env
     volumes:
       - ./apps/users/src:/usr/src/app/src
-      - ./apps/users/node_modules:/usr/src/app/node_modules    
+      - ./apps/users/node_modules:/usr/src/app/node_modules 
+    depends_on:
+      - nats
   # oders_microservice:
   #   build: 
   #     context: .
