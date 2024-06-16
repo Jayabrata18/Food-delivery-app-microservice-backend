@@ -5,12 +5,15 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/http-api-gateway/tsconfig.app.json"
+    "tsConfigPath": "apps/http-api-gateway/tsconfig.app.json",
+    "assets": [
+      "**/*.proto"
+    ],
+    "watchAssets": true
   },
   "monorepo": true,
   "root": "apps/http-api-gateway",
   "projects": {
-    
     "users": {
       "type": "application",
       "root": "apps/users",

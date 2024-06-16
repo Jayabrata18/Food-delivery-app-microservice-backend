@@ -3,7 +3,7 @@ FROM node:18 As development
 WORKDIR /usr/src/apps
 
 # Install NestJS CLI
-RUN npm install -g @nestjs/cli nodemon
+RUN npm install -g @nestjs/cli 
 
 
 COPY package*.json ./

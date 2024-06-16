@@ -8,9 +8,9 @@ export class UsersMicroserviceController {
   constructor(
     @Inject('NATS_SERVICE') private natsClient: ClientProxy,
   ) { }
-  @MessagePattern({ cmd: 'create_user' })
+  @MessagePattern({ "cmd": "create_user" })
   createUser(@Payload() data: CreateUserDto) {
-    console.log(data);
+    console.log("user_microservice", data);
     return data;
 
 

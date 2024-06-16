@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./apps/http-api-gateway/Dockerfile
       target: development
-    command: nodemon --watch src --exec npm run start:dev
+    command: npm run start:dev http-api-gateway
     # env_file:
     #   - ./apps/http-api-gateway/.env
     # depends_on:
@@ -15,12 +15,15 @@ services:
     volumes:
       - ./apps/http-api-gateway/src:/usr/src/app/src
       - ./apps/http-api-gateway/node_modules:/usr/src/app/node_modules
+    depends_on:
+      - nats
+
   users_microservice:
     build: 
       context: .
       dockerfile: ./apps/users/Dockerfile
       target: development
-    command: nodemon --watch src --exec npm run start:dev
+    command: npm run start:dev users
     # env_file:
     #   - ./apps/users/.env
     volumes:
@@ -52,6 +55,8 @@ services:
     image: nats:latest
     ports:
       - "4222:4222"
+    #   - '8222:8222'
+    # command: -js
 # postgres database
   # postgres:
   #   image: postgres:latest

@@ -8,7 +8,7 @@ export class UsersController {
 
     @Post()
     createUser(@Body() createUserDto: CreateUserDto) {
-        console.log(createUserDto);
+        console.log("api-gatweway",createUserDto);
         return this.natsClient
             .send({ cmd: 'create_user' }, createUserDto)
     }

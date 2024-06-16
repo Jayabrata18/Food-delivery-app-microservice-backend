@@ -20,12 +20,14 @@
     "test:e2e": "jest --config ./apps/odering/test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs-plugins/nestjs-nats-jetstream-transport": "^2.2.6",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/microservices": "^10.3.9",
     "@nestjs/platform-express": "^10.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "joi": "^17.13.1",
     "nats": "^2.26.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
