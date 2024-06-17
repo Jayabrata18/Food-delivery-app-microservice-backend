@@ -8,13 +8,12 @@ services:
     command: npm run start:dev http-api-gateway
     env_file:
       - ./apps/http-api-gateway/.env
-    # depends_on:
-    #   - postgres    
     ports:
       - "3000:3000"
     volumes:
-      - ./apps/http-api-gateway/src:/usr/src/app/src
-      - ./apps/http-api-gateway/node_modules:/usr/src/app/node_modules
+       - ./apps/http-api-gateway/src:/usr/src/apps/apps/http-api-gateway/src
+       - ./libs:/usr/src/apps/libs
+       - /usr/src/apps/node_modules
     depends_on:
       - nats
 
@@ -27,8 +26,9 @@ services:
     env_file:
       - ./apps/users/.env
     volumes:
-      - ./apps/users/src:/usr/src/app/src
-      - ./apps/users/node_modules:/usr/src/app/node_modules 
+       - ./apps/users/src:/usr/src/apps/apps/users/src
+       - ./libs:/usr/src/apps/libs
+       - /usr/src/apps/node_modules
     depends_on:
       - nats
   # oders_microservice:
