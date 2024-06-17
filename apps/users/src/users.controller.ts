@@ -9,13 +9,20 @@ export class UsersMicroserviceController {
 
   constructor(
     @Inject('NATS_SERVICE') private natsClient: ClientProxy,
+    private userService: UsersMicroserviceService,
   ) { }
-  @MessagePattern({ "cmd": "create_user" })
-  createUser(@Payload() data: CreateUserDto) {
-    this.logger.log("createUser method called with data: " + JSON.stringify(data));
-    console.log("user_microservice", data);
-    return data;
+  @MessagePattern({ cmd: 'create_user' })
+  async createUser(@Payload() data: CreateUserDto) {
+    this.logger.log('Received create user request');
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
 
-
+    try {
+      const user = await this.userService.createUser(data);
+      this.logger.log(`User created successfully with userId: ${user.id}`);
+      return { message: 'User created successfully', user };
+    } catch (error) {
+      this.logger.error('Error creating user', error.stack);
+      throw error;
+    }
   }
 }
