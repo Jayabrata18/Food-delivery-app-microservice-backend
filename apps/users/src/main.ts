@@ -1,27 +1,28 @@
 import { NestFactory } from '@nestjs/core';
 import { UsersModule } from './users.module';
-import { CustomStrategy, MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { Logger } from 'nestjs-pino';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { Logger } from '@nestjs/common';
 import { ValidationPipe } from '@nestjs/common';
-import * as cookieParser from 'cookie-parser'
 import { ConfigService } from '@nestjs/config';
-import { NatsJetStreamServer } from '@nestjs-plugins/nestjs-nats-jetstream-transport';
 async function bootstrap() {
-  // const app = await NestFactory.create(UsersModule, { bufferLogs: true });
-  // const configService = app.get(ConfigService);
+  const appContext = await NestFactory.createApplicationContext(UsersModule, { bufferLogs: true });
+  const configService = appContext.get(ConfigService);
+  const NATS_URI = configService.getOrThrow<string>('NATS_URI');
+  const logger = new Logger('User-Microservice');
+  logger.log('Starting User-Microservice bootstrap process...');
+  logger.log(`Connecting to NATS at ${NATS_URI}`);
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     UsersModule,
-    
+
     {
       transport: Transport.NATS,
       options: {
-        servers: ['nats://nats'],
+        servers: [NATS_URI],
       },
     },
   );
- 
-  app.useLogger(app.get(Logger));
-  // app.use(cookieParser());
+
+  logger.log('Microservice created');
   // app.setGlobalPrefix('users');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   // app.connectMicroservice<CustomStrategy>({
@@ -43,9 +44,8 @@ async function bootstrap() {
   //   }),
   // });
   await app.listen();
-
-  // await app.init();
-  // await app.startAllMicroservices();
-
+  logger.log('User-Microservice Bootstrap process completed');
 }
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('User-Microservice Bootstrap process failed with error:', error);
+});
