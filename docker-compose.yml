@@ -32,17 +32,19 @@ services:
     depends_on:
       - nats
       - postgres
-  # oders_microservice:
-  #   build: 
-  #     context: .
-  #     dockerfile: ./apps/orders/Dockerfile
-  #     target: development
-  #   command: npm run start:dev
-  #   # env_file:
-  #   #   - ./apps/orders/.env
-  #   volumes:
-  #     - ./apps/orders/src:/usr/src/app/src
-  #     - ./apps/orders/node_modules:/usr/src/app/node_modules
+  oders_microservice:
+    build: 
+      context: .
+      dockerfile: ./apps/orders/Dockerfile
+      target: development
+    command: npm run start:dev oders
+    volumes:
+       - ./apps/orders/src:/usr/src/apps/apps/orders/src
+       - ./libs:/usr/src/apps/libs
+       - /usr/src/apps/node_modules
+    depends_on:
+      - nats
+      - postgres
   restaurants_microservice:
     build: 
       context: .
@@ -69,8 +71,8 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: postgres1
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data1
 volumes:
   postgres-data:

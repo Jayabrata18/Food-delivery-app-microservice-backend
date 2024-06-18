@@ -4,3 +4,4 @@
 # 2. nest new generate app orders
 # 3. nest new g app users
 
+docker system prune -a

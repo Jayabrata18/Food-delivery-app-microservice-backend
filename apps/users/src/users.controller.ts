@@ -1,10 +1,8 @@
 import { Controller, Get, Inject, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UsersMicroserviceService } from './users.service';
 import { ClientProxy, MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateUserDto } from '@app/common/dtos/create-user.dto';
 import { Logger } from '@nestjs/common';
-import { LoginUserDto } from '@app/common';
-import { User } from '@app/common/entity';
+import { CreateUserDto, LoginUserDto } from '@app/common';
 @Controller()
 export class UsersMicroserviceController {
   private readonly logger = new Logger(UsersMicroserviceController.name);

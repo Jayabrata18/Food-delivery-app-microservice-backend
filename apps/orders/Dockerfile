@@ -7,10 +7,18 @@ RUN npm install -g @nestjs/cli
 
 
 COPY package*.json ./
+COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
-RUN yarn install
+RUN npm install --loglevel verbose
 
-COPY . .
+# COPY . .
+COPY apps/orders apps/orders
+COPY libs libs
+
+
+RUN cd apps/orders && npm install --loglevel verbose
+RUN npm run build orders --loglevel verbose
 
 # RUN yarn run build
 
@@ -23,7 +31,7 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 
-RUN yarn install --only=production
+RUN npm install --only=production --loglevel verbose
 
 COPY . .
 

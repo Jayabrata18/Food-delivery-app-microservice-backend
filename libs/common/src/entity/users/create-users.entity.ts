@@ -1,5 +1,7 @@
-import { PrimaryGeneratedColumn, Column, Entity, BeforeInsert } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, BeforeInsert, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
+import { Order } from '../orders/order.entity';
 @Entity({ name: 'users' })
 export class User {
     @PrimaryGeneratedColumn()
@@ -17,6 +19,15 @@ export class User {
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);
+    }
+    @Column({ unique: true })
+    userId: string;
+
+    @BeforeInsert()
+    generateUserId() {
+        if (!this.userId) {
+            this.userId = crypto.randomBytes(5).toString('hex');
+        }
     }
 
     @Column({ nullable: true, })
@@ -42,6 +53,9 @@ export class User {
 
     @Column({ nullable: true })
     profilePictureUrl: string;
+
+    @OneToMany(() => Order, order => order.user)
+    orders: Order[];
 
     @Column('date', { default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;

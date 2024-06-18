@@ -5,8 +5,11 @@ import { NatsClientModule, pinoDevConfig, pinoProdConfig } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from 'nestjs-pino';
-import Joi from 'joi';
-import { Restaurant } from '@app/common/entity/create-restrudent.entity';
+import * as Joi from 'joi';
+import { Restaurant } from '@app/common/entity/restaurant/create-restrudent.entity';
+import { User } from '@app/common/entity';
+import { Order } from '@app/common/entity/orders/order.entity';
+import { OrderItem } from '@app/common/entity/orders/orderItem.entity';
 
 @Module({
   imports: [NatsClientModule,
@@ -42,8 +45,9 @@ import { Restaurant } from '@app/common/entity/create-restrudent.entity';
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DB'),
-        entities: [Restaurant],
+        entities: [User, Order, Restaurant, OrderItem],
         synchronize: true,  // Set to false in production
+        dropSchema: true,
       }),
       inject: [ConfigService],
     }),
@@ -52,4 +56,4 @@ import { Restaurant } from '@app/common/entity/create-restrudent.entity';
   controllers: [RestaurantsController],
   providers: [RestaurantsService],
 })
-export class RestaurantsModule {}
+export class RestaurantsModule { }

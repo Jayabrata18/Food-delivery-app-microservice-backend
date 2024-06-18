@@ -8,7 +8,10 @@ import { LoggerModule } from 'nestjs-pino';
 import { pinoDevConfig, pinoProdConfig } from '@app/common';
 // import { NatsJetStreamTransport } from '@nestjs-plugins/nestjs-nats-jetstream-transport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '@app/common/entity/create-users.entity';
+import { User } from '@app/common/entity/users/create-users.entity';
+import { Order } from '@app/common/entity/orders/order.entity';
+import { Restaurant } from '@app/common/entity/restaurant/create-restrudent.entity';
+import { OrderItem } from '@app/common/entity/orders/orderItem.entity';
 @Module({
   imports: [NatsClientModule,
     ConfigModule.forRoot({
@@ -43,12 +46,13 @@ import { User } from '@app/common/entity/create-users.entity';
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DB'),
-        entities: [User],
+        entities: [User, Order, Restaurant, OrderItem],
         synchronize: true,  // Set to false in production
+        dropSchema: true,
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Order, Restaurant, OrderItem]),
     // NatsJetStreamTransport.registerAsync({
     //   useFactory: (configService: ConfigService) => ({
     //     connectionOptions: {
