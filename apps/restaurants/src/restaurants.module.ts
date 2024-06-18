@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from 'nestjs-pino';
 import Joi from 'joi';
+import { Restaurant } from '@app/common/entity/create-restrudent.entity';
 
 @Module({
   imports: [NatsClientModule,
@@ -41,12 +42,12 @@ import Joi from 'joi';
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DB'),
-        entities: [],
+        entities: [Restaurant],
         synchronize: true,  // Set to false in production
       }),
       inject: [ConfigService],
     }),
-TypeOrmModule.forFeature([]),
+    TypeOrmModule.forFeature([Restaurant]),
   ],
   controllers: [RestaurantsController],
   providers: [RestaurantsService],
