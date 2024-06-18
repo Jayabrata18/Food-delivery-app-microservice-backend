@@ -5,8 +5,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
 import { pinoDevConfig, pinoProdConfig } from '@app/common';
+import { RestaurantModue } from './restaurants/restaurants.module';
 @Module({
-  imports: [NatsClientModule, UsersModule,
+  imports: [NatsClientModule, UsersModule, RestaurantModue,
     ConfigModule.forRoot({
       isGlobal: true,
       validationOptions: {

@@ -1,32 +1,23 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString, Min, MinLength } from "class-validator";
-import { Entity } from "typeorm";
+import { IsNotEmpty, IsString, IsDecimal, IsInt } from 'class-validator';
 
-
-@Entity()
-export class MenuItems {
-    @IsString()
+export class CreateMenuItemDto {
     @IsNotEmpty()
-    @MinLength(3, { message: 'menuItemName must have atleast 3 characters.' })
+    @IsString()
     menuItemName: string;
-    @IsString()
+
     @IsNotEmpty()
-    @MinLength(10, { message: 'menuItemDescription must have atleast 10 characters.' })
+    @IsString()
     menuItemDescription: string;
-    @IsString()
+
     @IsNotEmpty()
+    @IsString()
     menuItemType: string;
-    @IsNumber()
+
     @IsNotEmpty()
-    @Min(1)
+    @IsDecimal()
     menuItemPrice: number;
-    @IsString()
 
-    menuItemImage: string;
-    @IsNumber()
-    categoryId: number;
-
-    @IsArray()
-    restaurant: string[];
-
-
+    @IsNotEmpty()
+    @IsInt()
+    restaurantId: number; // Assuming this is the ID of the associated restaurant
 }

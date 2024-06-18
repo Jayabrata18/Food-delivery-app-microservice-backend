@@ -1,24 +1,28 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
+import { IsArray, IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, MinLength } from "class-validator";
 
 
 export class CreateRestaurantDto {
-    @IsString()
     @IsNotEmpty()
-    @MinLength(3, { message: 'Name must have atleast 3 characters.' })
+    @IsString()
     restaurantName: string;
 
-    @IsString()
     @IsNotEmpty()
+    @IsString()
     restaurantAddress: string;
 
-    @IsNumber()
     @IsNotEmpty()
+    @IsInt()
     pincode: number;
 
-    @IsString()
     @IsNotEmpty()
+    @IsString()
     restaurantType: string;
 
-    @IsArray()
-    menuItems: string[];
+    @IsOptional()
+    @IsBoolean()
+    isActive?: boolean;
+
+    @IsOptional()
+    @IsUrl()
+    restaurantPictureUrl?: string;
 }

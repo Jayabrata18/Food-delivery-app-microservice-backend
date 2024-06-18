@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { RestaurantsController } from './restaurants.controller';
-import { RestaurantsService } from './restaurants.service';
+import { RestaurantsMicroserviceController } from './restaurants.controller';
+import { RestaurantsMicroserviceService } from './restaurants.service';
 import { NatsClientModule, pinoDevConfig, pinoProdConfig } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -54,7 +54,7 @@ import { MenuItems } from '@app/common/entity/restaurant/menuItems.entity';
     }),
     TypeOrmModule.forFeature([User, Restaurant, MenuItems, Order, OrderItem]),
   ],
-  controllers: [RestaurantsController],
-  providers: [RestaurantsService],
+  controllers: [RestaurantsMicroserviceController],
+  providers: [RestaurantsMicroserviceService],
 })
 export class RestaurantsModule { }
