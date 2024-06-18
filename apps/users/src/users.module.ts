@@ -12,6 +12,7 @@ import { User } from '@app/common/entity/users/create-users.entity';
 import { Order } from '@app/common/entity/orders/order.entity';
 import { Restaurant } from '@app/common/entity/restaurant/create-restrudent.entity';
 import { OrderItem } from '@app/common/entity/orders/orderItem.entity';
+import { MenuItems } from '@app/common/entity/restaurant/menuItems.entity';
 @Module({
   imports: [NatsClientModule,
     ConfigModule.forRoot({
@@ -46,13 +47,13 @@ import { OrderItem } from '@app/common/entity/orders/orderItem.entity';
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DB'),
-        entities: [User, Order, Restaurant, OrderItem],
+        entities: [User, Restaurant, MenuItems, Order, OrderItem],
         synchronize: true,  // Set to false in production
         dropSchema: true,
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User, Order, Restaurant, OrderItem]),
+    TypeOrmModule.forFeature([User, Restaurant, MenuItems, Order, OrderItem]),
     // NatsJetStreamTransport.registerAsync({
     //   useFactory: (configService: ConfigService) => ({
     //     connectionOptions: {

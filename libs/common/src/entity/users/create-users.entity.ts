@@ -1,25 +1,27 @@
-import { PrimaryGeneratedColumn, Column, Entity, BeforeInsert, OneToMany } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { Order } from '../orders/order.entity';
+
 @Entity({ name: 'users' })
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: 'varchar', length: 255, nullable: false, })
+    @Column({ type: 'varchar', length: 255, nullable: false })
     name: string;
 
-    @Column({ type: 'varchar', length: 255, unique: true, nullable: false, })
+    @Column({ type: 'varchar', length: 255, unique: true, nullable: false })
     email: string;
 
-    @Column({ type: 'varchar', length: 255, nullable: false, })
+    @Column({ type: 'varchar', length: 255, nullable: false })
     password: string;
 
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);
     }
+
     @Column({ unique: true })
     userId: string;
 
@@ -30,7 +32,7 @@ export class User {
         }
     }
 
-    @Column({ nullable: true, })
+    @Column({ nullable: true })
     avatar?: string;
 
     @Column({ type: 'varchar', default: "asdf-qwer-zxcv-mnbv" })
@@ -57,9 +59,9 @@ export class User {
     @OneToMany(() => Order, order => order.user)
     orders: Order[];
 
-    @Column('date', { default: () => 'CURRENT_TIMESTAMP' })
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
-    @Column('date', { default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
     updatedAt: Date;
 }

@@ -1,8 +1,8 @@
-import { BeforeInsert, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "../users/create-users.entity";
-import { OrderItem } from "./orderItem.entity";
+import { BeforeInsert, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../users/create-users.entity';
+import { OrderItem } from './orderItem.entity';
 import * as crypto from 'crypto';
-import { Restaurant } from "../restaurant/create-restrudent.entity";
+import { Restaurant } from '../restaurant/create-restrudent.entity';
 
 @Entity()
 export class Order {
@@ -19,10 +19,10 @@ export class Order {
         }
     }
 
-    @ManyToOne(() => User, user => user.userId)
+    @ManyToOne(() => User, user => user.orders)
     user: User;
 
-    @ManyToOne(() => Restaurant, restaurant => restaurant.restaurantId)
+    @ManyToOne(() => Restaurant, restaurant => restaurant.orders)
     restaurant: Restaurant;
 
     @OneToMany(() => OrderItem, orderItem => orderItem.order, { cascade: true })
