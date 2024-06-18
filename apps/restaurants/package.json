@@ -1,5 +1,5 @@
 {
-    "name": "@food-delivery-backend-microservice/users",
+    "name": "@food-delivery-backend-microservice/restaurants",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",

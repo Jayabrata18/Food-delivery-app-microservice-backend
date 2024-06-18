@@ -1,16 +1,24 @@
 FROM node:18 As development
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/apps
 
 # Install NestJS CLI
 RUN npm install -g @nestjs/cli
 
 
 COPY package*.json ./
+COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
-RUN yarn install
+RUN npm install --loglevel verbose
 
-COPY . .
+# COPY . .
+COPY apps/restaurants apps/restaurants
+COPY libs libs
+
+
+RUN cd apps/restaurants && npm install --loglevel verbose
+RUN npm run build restaurants --loglevel verbose
 
 # RUN yarn run build
 
@@ -23,7 +31,7 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 
-RUN yarn install --only=production
+RUN npm install --only=production --loglevel verbose
 
 COPY . .
 
