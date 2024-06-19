@@ -15,5 +15,6 @@ export class RestaurantsController {
         this.logger.log("createRestaurant method called with data: " + JSON.stringify(createRestaurantDto));
         return this.natsClient
             .send({ cmd: 'create_restaurant' }, createRestaurantDto)
+
     }
 }
