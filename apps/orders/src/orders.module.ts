@@ -12,6 +12,7 @@ import { User } from '@app/common/entity';
 import { Restaurant } from '@app/common/entity/restaurant/create-restrudent.entity';
 import { OrderItem } from '@app/common/entity/orders/orderItem.entity';
 import { MenuItems } from '@app/common/entity/restaurant/menuItems.entity';
+import { Ordergg } from '@app/common/entity/orders/ordergg.entity';
 
 @Module({
   imports: [NatsClientModule,
@@ -47,13 +48,13 @@ import { MenuItems } from '@app/common/entity/restaurant/menuItems.entity';
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DB'),
-        entities: [User, Restaurant, MenuItems, Order, OrderItem],
+        entities: [User, Restaurant, MenuItems, Order, OrderItem, Ordergg],
         synchronize: true,  // Set to false in production
         dropSchema: true,
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User, Restaurant, MenuItems, Order, OrderItem]),
+    TypeOrmModule.forFeature([User, Restaurant, MenuItems, Order, OrderItem, Ordergg]),
   ],
   controllers: [OrdersController],
   providers: [OrdersService],
