@@ -21,6 +21,20 @@ export class RestaurantsMicroserviceController {
       throw error;
     }
   }
+  //add-items
+  @MessagePattern({ cmd: 'add_items' })
+  async createRestaurantMenuItems(@Payload() data: CreateRestaurantDto) {
+    this.logger.log('Received create restaurant menu items request');
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
+    try {
+      const menuItem = await this.restaurantsService.createRestaurantMenuItems(data);
+      this.logger.log(`Menu item created successfully with menuItemId: ${menuItem.id}`);
+      return { message: 'Menu item created successfully', menuItem };
+    } catch (error) {
+      this.logger.error('Error creating menu item', error.stack);
+      throw error;
+    }
+  }
 
   
 }

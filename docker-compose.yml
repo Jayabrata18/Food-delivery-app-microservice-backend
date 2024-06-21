@@ -73,6 +73,6 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
-      - postgres-data:/var/lib/postgresql/data2
+      - postgres-data:/var/lib/postgresql/data3
 volumes:
   postgres-data:

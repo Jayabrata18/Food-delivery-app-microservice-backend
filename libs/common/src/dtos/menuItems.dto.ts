@@ -1,23 +1,36 @@
-import { IsNotEmpty, IsString, IsDecimal, IsInt } from 'class-validator';
+import { IsNotEmpty, IsString, IsDecimal, IsInt, IsOptional, Length, IsUrl, IsNumber } from 'class-validator';
 
 export class CreateMenuItemDto {
-    @IsNotEmpty()
     @IsString()
+    @Length(1, 455)
+    @IsNotEmpty()
     menuItemName: string;
 
-    @IsNotEmpty()
     @IsString()
+    @Length(1, 455)
+    @IsNotEmpty()
     menuItemDescription: string;
 
-    @IsNotEmpty()
     @IsString()
+    @Length(1, 455)
+    @IsNotEmpty()
     menuItemType: string;
 
+    @IsNumber({ maxDecimalPlaces: 2 })
     @IsNotEmpty()
-    @IsDecimal()
     menuItemPrice: number;
 
-    @IsNotEmpty()
+    @IsString()
+    @Length(1, 455)
+    @IsOptional()
+    @IsUrl()
+    menuItemImage?: string;
+
     @IsInt()
-    restaurantId: number; // Assuming this is the ID of the associated restaurant
+    @IsOptional()
+    categoryId?: number;
+
+    @IsString()
+    @IsNotEmpty()
+    restaurantId: string;
 }

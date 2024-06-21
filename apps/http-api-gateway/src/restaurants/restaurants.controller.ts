@@ -1,4 +1,5 @@
 import { CreateRestaurantDto } from "@app/common/dtos/create-restaurant.dto";
+import { CreateMenuItemDto } from "@app/common/dtos/menuItems.dto";
 import { Body, Controller, Inject, Logger, Post } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 
@@ -16,5 +17,13 @@ export class RestaurantsController {
         return this.natsClient
             .send({ cmd: 'create_restaurant' }, createRestaurantDto)
 
+    }
+    //create restaurant menu items
+    @Post('/add-items')
+    createRestaurantMenuItems(@Body() createMenuItemDto: CreateMenuItemDto) {
+        console.log("api-gatweway", createMenuItemDto);
+        this.logger.log("createRestaurantMenuItems method called with data: " + JSON.stringify(createMenuItemDto));
+        return this.natsClient
+           .send({ cmd: 'add_items' }, createMenuItemDto)
     }
 }

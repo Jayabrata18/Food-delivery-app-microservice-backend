@@ -1,10 +1,22 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Restaurant } from './create-restrudent.entity';
+import * as crypto from 'crypto';
 
 @Entity()
 export class MenuItems {
     @PrimaryGeneratedColumn()
-    menuItemId: number;
+    id: number;
+
+    @Column({ unique: true })
+    menuItemId: string;
+
+    @BeforeInsert()
+    generateMenuItemId() {
+        if (!this.menuItemId) {
+            this.menuItemId = crypto.randomBytes(5).toString('hex');
+        }
+    }
+
 
     @Column({ type: 'varchar', length: 455, nullable: false })
     menuItemName: string;

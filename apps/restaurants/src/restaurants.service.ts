@@ -12,4 +12,9 @@ export class RestaurantsMicroserviceService {
     const newRestaurant = this.restaurantRepository.create(restaurantDto);
     return this.restaurantRepository.save(newRestaurant);
   }
+  //add-items
+  createRestaurantMenuItems(restaurantDto: CreateRestaurantDto) {
+    const newRestaurant = this.restaurantRepository.create(restaurantDto);
+    return this.restaurantRepository.save(newRestaurant);
+  }
 }
