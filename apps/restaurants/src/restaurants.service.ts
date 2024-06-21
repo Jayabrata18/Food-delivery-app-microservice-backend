@@ -34,11 +34,18 @@ export class RestaurantsMicroserviceService {
   //get-restaurant-menu-items
   async getRestaurantMenuItems(restaurantId: string) {
     console.log("service:", restaurantId);
-    // const restaurant = await this.restaurantRepository.findOneBy({ restaurantId });
-    // if (!restaurant) {
-    //   throw new BadRequestException('Invalid restaurantId');
-    // }
-    return await this.restaurantRepository.find({ where: { restaurantId }, relations: ['menuItems'],
-     });
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+      relations: ['menuItems'],
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }else{
+      return restaurant.menuItems;
+    }
+    // return await this.restaurantRepository.find(
+    // //   { where: { restaurantId }, relations: ['menuItems'],
+    // //  }
+    // );
   }
 }

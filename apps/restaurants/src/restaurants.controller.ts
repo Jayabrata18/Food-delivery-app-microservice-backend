@@ -56,7 +56,7 @@ export class RestaurantsMicroserviceController {
     this.logger.debug(`Payload: ${JSON.stringify(data)}`);
     try {
       const menuItems = await this.restaurantsService.getRestaurantMenuItems(data.restaurantId);
-      return { message: 'Menu items fetched successfully', menuItems };
+      return { message: `Menu items fetched successfully for this restaurantId ${data.restaurantId}`, menuItems };
     } catch (error) {
       this.logger.error('Error fetching menu items', error.stack);
       throw error;
