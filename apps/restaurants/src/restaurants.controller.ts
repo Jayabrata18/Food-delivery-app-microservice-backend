@@ -3,6 +3,7 @@ import { RestaurantsMicroserviceService } from './restaurants.service';
 import { ClientProxy, MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateRestaurantDto } from '@app/common/dtos/create-restaurant.dto';
 import { CreateMenuItemDto } from '@app/common/dtos/menuItems.dto';
+import { UpdateMenuItemDto } from '@app/common';
 
 @Controller()
 export class RestaurantsMicroserviceController {
@@ -59,6 +60,20 @@ export class RestaurantsMicroserviceController {
       return { message: `Menu items fetched successfully for this restaurantId ${data.restaurantId}`, menuItems };
     } catch (error) {
       this.logger.error('Error fetching menu items', error.stack);
+      throw error;
+    }
+  }
+  //update-restaurant-menu-items
+  @MessagePattern({ cmd: 'update_restaurant_menu_items' })
+  async updateRestaurantMenuItems(@Payload() data: { restaurantId: string, menuItemDto: UpdateMenuItemDto }) {
+    this.logger.log('Received update restaurant menu items request');
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
+    try {
+      const menuItem = await this.restaurantsService.updateRestaurantMenuItems(data.restaurantId, data.menuItemDto);
+      this.logger.log(`Menu item updated successfully with menuItemId: ${menuItem.id}`);
+      return { message: 'Menu item updated successfully', menuItem };
+    } catch (error) {
+      this.logger.error('Error updating menu item', error.stack);
       throw error;
     }
   }

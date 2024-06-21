@@ -1,3 +1,4 @@
+import { UpdateMenuItemDto } from '@app/common';
 import { CreateRestaurantDto } from '@app/common/dtos/create-restaurant.dto';
 import { CreateMenuItemDto } from '@app/common/dtos/menuItems.dto';
 import { Restaurant } from '@app/common/entity';
@@ -11,7 +12,7 @@ export class RestaurantsMicroserviceService {
   constructor(
     @InjectRepository(Restaurant) private readonly restaurantRepository: Repository<Restaurant>,
     @InjectRepository(MenuItems) private readonly menuItemRepository: Repository<MenuItems>) { }
-  
+
   //create-restaurant
   createRestaurant(restaurantDto: CreateRestaurantDto) {
     const newRestaurant = this.restaurantRepository.create(restaurantDto);
@@ -33,19 +34,32 @@ export class RestaurantsMicroserviceService {
   }
   //get-restaurant-menu-items
   async getRestaurantMenuItems(restaurantId: string) {
-    console.log("service:", restaurantId);
     const restaurant = await this.restaurantRepository.findOne({
       where: { restaurantId },
       relations: ['menuItems'],
     });
     if (!restaurant) {
       throw new BadRequestException('Invalid restaurantId');
-    }else{
+    } else {
       return restaurant.menuItems;
     }
-    // return await this.restaurantRepository.find(
-    // //   { where: { restaurantId }, relations: ['menuItems'],
-    // //  }
-    // );
+
+  }
+  //update-restaurant-menu-items
+  async updateRestaurantMenuItems(restaurantId: string, menuItemDto: UpdateMenuItemDto) {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+      relations: ['menuItems'],
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }
+    const menuItem = restaurant.menuItems.find((item) => item.id === Number(menuItemDto.menuItemId));
+    if (!menuItem) {
+      throw new BadRequestException('Invalid menuItemId');
+    }
+    Object.assign(menuItem, menuItemDto);
+    return await this.menuItemRepository.save(menuItem);
+    
   }
 }
