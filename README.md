@@ -13,3 +13,11 @@
  kuber
  ddos
  
+NODE_ENV= development
+NATS_URI=nats://nats
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=postgres
+HTTP_PORT=3000

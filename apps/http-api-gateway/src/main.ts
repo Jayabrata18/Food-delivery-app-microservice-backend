@@ -50,8 +50,8 @@ async function bootstrap() {
   await app.startAllMicroservices();
   // const PORT = 3000;
   await app.listen(HTTP_PORT, () => {
-    console.log(`  🚀   Microservice is running at port ${HTTP_PORT}`);
-    logger.log(`  🚀   Microservice is running at port ${HTTP_PORT}`);
+    console.log(`🚀 Microservice is running at port ${HTTP_PORT}`);
+    logger.log(`🚀 Microservice is running at port ${HTTP_PORT}`);
   });
 }
 bootstrap().catch((error) => {
