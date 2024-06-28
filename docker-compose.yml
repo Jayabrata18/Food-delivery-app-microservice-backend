@@ -56,7 +56,19 @@ services:
     volumes:
        - ./apps/restaurants/src:/usr/src/apps/apps/restaurants/src
        - ./libs:/usr/src/apps/libs
-       - /usr/src/apps/node_modules       
+       - /usr/src/apps/node_modules  
+  delivery-partners:
+    build:
+      context: .
+      dockerfile: ./apps/delivery-partners/Dockerfile     
+      target: development
+    command: npm run start:dev delivery-partners
+    env_file:
+      - ./apps/delivery-partners/.env
+    volumes:
+       - ./apps/delivery-partners/src:/usr/src/apps/apps/delivery-partners/src
+       - ./libs:/usr/src/apps/libs
+       - /usr/src/apps/node_modules     
   nats:
     image: nats:latest
     ports:

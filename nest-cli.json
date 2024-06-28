@@ -58,6 +58,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/orders/tsconfig.app.json"
       }
+    },
+    "delivery-partners": {
+      "type": "application",
+      "root": "apps/delivery-partners",
+      "entryFile": "main",
+      "sourceRoot": "apps/delivery-partners/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/delivery-partners/tsconfig.app.json"
+      }
     }
   }
 }

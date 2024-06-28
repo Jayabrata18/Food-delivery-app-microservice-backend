@@ -4,6 +4,7 @@
 # 2. nest new generate app orders
 # 3. nest new g app users
 # 4. docker volume create postgres-data
+# 5. nest generate app delivery-partners
 
  docker system prune -a -f --volumes
  add datadog promethus grafana
@@ -26,7 +27,7 @@ HTTP_PORT=3000
 
 # API documentation
 
-Admin Service
+# Admin Service
 
 User Management
 
@@ -63,7 +64,7 @@ GET /admin/analytics/revenue: Retrieve revenue statistics.
 
 
 
-Restaurant Service
+# Restaurant Service
 1. Apply for restaurants
 
 Menu Management
@@ -112,7 +113,9 @@ Notifications
 
 GET /users/{id}/notifications: Retrieve notifications for the user.
 POST /users/{id}/notifications: Send a notification to the user.
-Delivery Partner Service
+
+# Delivery Partner Service
+
 Profile Management
 
 GET /delivery-partners/{id}
@@ -124,7 +127,8 @@ PUT /delivery-partners/{id}/orders/{orderId}
 Analytics
 
 GET /delivery-partners/{id}/analytics/orders: Retrieve order statistics.
-Order Service
+
+# Order Service
 Order Processing
 
 GET /orders/{orderId}
@@ -137,7 +141,7 @@ Notifications
 
 POST /orders/{orderId}/notifications: Send a notification related to an order.
 General APIs
-Authentication
+# Authentication
 
 POST /auth/login
 POST /auth/register
@@ -146,7 +150,8 @@ Search
 
 GET /search/restaurants
 GET /search/menu-items
-Analytics Service
+
+# Analytics Service
 General Analytics
 GET /analytics/overview: Retrieve an overview of all statistics.
 GET /analytics/orders: Retrieve order statistics.
@@ -154,7 +159,8 @@ GET /analytics/users: Retrieve user statistics.
 GET /analytics/restaurants: Retrieve restaurant statistics.
 GET /analytics/delivery-partners: Retrieve delivery partner statistics.
 GET /analytics/revenue: Retrieve revenue statistics.
-Notifications Service
+
+# Notifications Service
 Send Notifications
 POST /notifications: Send a notification.
 Retrieve Notifications
