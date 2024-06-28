@@ -65,6 +65,7 @@ services:
     # command: -js
 # postgres database
   postgres:
+    restart: always
     image: postgres:latest
     ports:
       - "5432:5432"
@@ -73,6 +74,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
-      - postgres-data:/var/lib/postgresql/data4
+      - postgres-data:/var/lib/postgresql/data4/ 
 volumes:
   postgres-data:
+    external: false

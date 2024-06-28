@@ -1,14 +1,14 @@
 import { Controller, Get, Inject, Logger } from '@nestjs/common';
 import { RestaurantsMicroserviceService } from './restaurants.service';
 import { ClientProxy, MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateRestaurantDto } from '@app/common/dtos/create-restaurant.dto';
-import { CreateMenuItemDto } from '@app/common/dtos/menuItems.dto';
+import { CreateRestaurantDto } from '@app/common/dtos/restaurants/create-restaurant.dto';
+import { CreateMenuItemDto } from '@app/common/dtos/restaurants/menu/menuItems.dto';
 import { UpdateMenuItemDto } from '@app/common';
 
 @Controller()
 export class RestaurantsMicroserviceController {
   private readonly logger = new Logger(RestaurantsMicroserviceController.name);
-  constructor(@Inject('NATS_SERVICE') private natsClient: ClientProxy, private readonly restaurantsService: RestaurantsMicroserviceService) {}
+  constructor(@Inject('NATS_SERVICE') private natsClient: ClientProxy, private readonly restaurantsService: RestaurantsMicroserviceService) { }
 
   //create-restaurant
   @MessagePattern({ cmd: 'create_restaurant' })
@@ -78,5 +78,5 @@ export class RestaurantsMicroserviceController {
     }
   }
 
-  
+
 }

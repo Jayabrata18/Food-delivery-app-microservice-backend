@@ -36,8 +36,11 @@ export class MenuItems {
     @Column({ type: 'int', nullable: true })
     categoryId: number;
 
-    @ManyToOne(() => Restaurant, restaurant => restaurant.menuItems)
+    @ManyToOne(() => Restaurant, (restaurant: { menuItems: any; }) => restaurant.menuItems)
     restaurant: Restaurant;
+
+    @Column()
+    isAvailable: boolean;
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;

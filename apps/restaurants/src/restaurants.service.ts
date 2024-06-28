@@ -1,6 +1,6 @@
 import { UpdateMenuItemDto } from '@app/common';
-import { CreateRestaurantDto } from '@app/common/dtos/create-restaurant.dto';
-import { CreateMenuItemDto } from '@app/common/dtos/menuItems.dto';
+import { CreateRestaurantDto } from '@app/common/dtos/restaurants/create-restaurant.dto';
+import { CreateMenuItemDto } from '@app/common/dtos/restaurants/menu/menuItems.dto';
 import { Restaurant } from '@app/common/entity';
 import { MenuItems } from '@app/common/entity/restaurant/menuItems.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -60,6 +60,6 @@ export class RestaurantsMicroserviceService {
     }
     Object.assign(menuItem, menuItemDto);
     return await this.menuItemRepository.save(menuItem);
-    
+
   }
 }

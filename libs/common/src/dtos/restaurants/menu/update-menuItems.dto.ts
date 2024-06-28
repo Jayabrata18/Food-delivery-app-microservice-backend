@@ -39,4 +39,9 @@ export class UpdateMenuItemDto {
     @IsString()
     @IsNotEmpty()
     restaurantId: string;
+
+    @IsNotEmpty({ default: true })
+    isAvailable: boolean;
+
+
 }

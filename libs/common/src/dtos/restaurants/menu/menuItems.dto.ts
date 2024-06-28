@@ -33,4 +33,7 @@ export class CreateMenuItemDto {
     @IsString()
     @IsNotEmpty()
     restaurantId: string;
+
+    @IsNotEmpty({ default: true })
+    isAvailable: boolean;
 }
