@@ -109,6 +109,7 @@ Payment Management
 
 POST /users/{id}/payments
 GET /users/{id}/payments/{paymentId}
+
 Notifications
 
 GET /users/{id}/notifications: Retrieve notifications for the user.

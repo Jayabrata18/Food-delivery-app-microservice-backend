@@ -19,13 +19,13 @@ export class Order {
         }
     }
 
-    @ManyToOne(() => User, user => user.orders)
+    @ManyToOne(() => User, (user: { orders: any; }) => user.orders)
     user: User;
 
-    @ManyToOne(() => Restaurant, restaurant => restaurant.orders)
+    @ManyToOne(() => Restaurant, (restaurant: { orders: any; }) => restaurant.orders)
     restaurant: Restaurant;
 
-    @OneToMany(() => OrderItem, orderItem => orderItem.order, { cascade: true })
+    @OneToMany(() => OrderItem, (orderItem: { order: any; }) => orderItem.order, { cascade: true })
     items: OrderItem[];
 
     @Column()
