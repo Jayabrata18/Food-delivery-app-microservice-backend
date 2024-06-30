@@ -15,6 +15,6 @@ export class UpdatePriceOfMenuDto {
     @IsNotEmpty()
     restaurantId: string;
 
-    @IsNotEmpty({ default: true })
-    isAvailable: boolean;
+    @IsNotEmpty()
+    isAvailable: boolean = true;
 }

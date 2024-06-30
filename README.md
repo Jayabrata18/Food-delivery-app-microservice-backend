@@ -32,10 +32,11 @@ HTTP_PORT=3000
 User Management
 
 GET /admin/users
-POST /admin/users
+POST /admin/users x
 GET /admin/users/{id}
 PUT /admin/users/{id}
 DELETE /admin/users/{id}
+
 
 Restaurant Management
 
@@ -90,7 +91,7 @@ GET /restaurants/{id}/analytics/orders: Retrieve order statistics.✅
 GET /restaurants/{id}/analytics/revenue: Retrieve revenue statistics.✅
 
 
-User Service
+# User Service
 
 User Profile
 
@@ -132,9 +133,10 @@ GET /delivery-partners/{id}/analytics/orders: Retrieve order statistics.
 # Order Service
 Order Processing
 
-GET /orders/{orderId}
-PUT /orders/{orderId}
-DELETE /orders/{orderId}
+POST /orders/✅
+GET /orders/{orderId}✅
+PUT /orders/{orderId}✅
+DELETE /orders/{orderId}✅
 Order Tracking
 
 GET /orders/{orderId}/tracking

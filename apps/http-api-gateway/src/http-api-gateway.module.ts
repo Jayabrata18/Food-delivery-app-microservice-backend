@@ -2,12 +2,14 @@ import { Logger, Module } from '@nestjs/common';
 import { NatsClientModule } from '@app/common/nats-client/nats-client.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as Joi from 'joi';
+import Joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
 import { pinoDevConfig, pinoProdConfig } from '@app/common';
 import { RestaurantModue } from './restaurants/restaurants.module';
+import { OrdersModule } from './orders/orders.module';
+import { AdminModule } from './admin/admin.module';
 @Module({
-  imports: [NatsClientModule, UsersModule, RestaurantModue,
+  imports: [NatsClientModule, UsersModule, RestaurantModue, OrdersModule, AdminModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationOptions: {

@@ -1,9 +1,9 @@
-export * from './create-user.dto';
-export * from './login-user.dto';
+export * from './users/create-user.dto';
+export * from './users/login-user.dto';
 export * from './restaurants/create-restaurant.dto';
 export * from './restaurants/menu/menuItems.dto';
 export * from './restaurants/menu/update-menuItems.dto';
-
 export * from './restaurants/menu/update-price-menu.dto';
-
 export * from './restaurants/menu/update-menu-ittems-status.dto';
+export * from './orders/create-order.dto';
+export * from './orders/order-statuts-update.dto';
