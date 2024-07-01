@@ -38,6 +38,39 @@ export class UsersController {
     //--------------------Restaurants Related--------------------------
 
 
+    //get restaurant all menu items
+    @Get('/:restaurantId/menu')
+    getRestaurantMenuItems(@Param('restaurantId') restaurantId: string) {
+        console.log('api-gatweway', restaurantId);
+        this.logger.log(
+            '✅getRestaurantMenuItems method called with restaurantId: ' +
+            restaurantId,
+        );
+        return this.natsClient.send(
+            { cmd: 'get_all_menu_items' },
+            { restaurantId },
+        );
+    }
+    //get details of a specific menu item
+    @Get('/:restaurantId/menu/:menuItemId')
+    getRestaurantMenuItem(
+        @Param('restaurantId') restaurantId: string,
+        @Param('menuItemId') menuItemId: string,
+    ) {
+        console.log('api-gatweway', restaurantId, menuItemId);
+        this.logger.log(
+            '✅getRestaurantMenuItem method called with restaurantId: ' +
+            restaurantId +
+            ' menuItemId: ' +
+            menuItemId,
+        );
+        return this.natsClient.send(
+            { cmd: 'get_menu_item' },
+            { restaurantId, menuItemId },
+        );
+    }
+
+
     //find restaurants by pincode
     @Get('/restaurants/:pincode')
     findRestaurantsByPincode(@Param('pincode') pincode: number) {

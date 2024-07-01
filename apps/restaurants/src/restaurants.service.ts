@@ -14,7 +14,7 @@ export class RestaurantsMicroserviceService {
     private readonly restaurantRepository: Repository<Restaurant>,
     @InjectRepository(MenuItems)
     private readonly menuItemRepository: Repository<MenuItems>,
-  ) { }
+  ) {}
 
   //create-restaurant
   createRestaurant(restaurantDto: CreateRestaurantDto) {
@@ -129,5 +129,125 @@ export class RestaurantsMicroserviceService {
     return await this.menuItemRepository.find({
       where: { menuItemName: Like(`%${menuItem}%`) },
     });
+  }
+  //get-details-of-a-specific-menu-item
+  async getRestaurantMenuItem(restaurantId: string, menuItemId: string) {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+      relations: ['menuItems'],
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }
+    const menuItem = restaurant.menuItems.find(
+      (item) => item.id === Number(menuItemId),
+    );
+    if (!menuItem) {
+      throw new BadRequestException('Invalid menuItemId');
+    }
+    return menuItem;
+  }
+  //update price of a menu item
+  async updateRestaurantMenuItemPrice(
+    restaurantId: string,
+    menuItemId: string,
+    price: number,
+  ) {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+      relations: ['menuItems'],
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }
+    const menuItem = restaurant.menuItems.find(
+      (item) => item.id === Number(menuItemId),
+    );
+    if (!menuItem) {
+      throw new BadRequestException('Invalid menuItemId');
+    }
+    menuItem.menuItemPrice = price;
+    return await this.menuItemRepository.save(menuItem);
+  }
+  //delete-restaurant-menu-item
+  async deleteRestaurantMenuItem(restaurantId: string, menuItemId: string) {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+      relations: ['menuItems'],
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }
+    const menuItem = restaurant.menuItems.find(
+      (item) => item.id === Number(menuItemId),
+    );
+    if (!menuItem) {
+      throw new BadRequestException('Invalid menuItemId');
+    }
+    return await this.menuItemRepository.remove(menuItem);
+  }
+  //update status of menu item (isAvailable or notAvailable)
+  async updateRestaurantMenuItemStatus(
+    restaurantId: string,
+    menuItemId: string,
+    status: boolean,
+  ) {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+      relations: ['menuItems'],
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }
+    const menuItem = restaurant.menuItems.find(
+      (item) => item.id === Number(menuItemId),
+    );
+    if (!menuItem) {
+      throw new BadRequestException('Invalid menuItemId');
+    }
+    menuItem.isAvailable = status;
+    return await this.menuItemRepository.save(menuItem);
+  }
+  //get-all-orders-by-a-restaurant
+  async getAllOrdersByRestaurant(restaurantId: string) {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+      relations: ['orders'],
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }
+    return restaurant.orders;
+  }
+  //get order by order id
+  async getRestaurantOrderById(restaurantId: string, orderId: string) {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+      relations: ['orders'],
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }
+    const order = restaurant.orders.find((order) => order.id === Number(orderId));
+    if (!order) {
+      throw new BadRequestException('Invalid orderId');
+    }
+    return order;
+  }
+  //update order status
+  async updateOrderStatus(restaurantId: string, orderId: string, status: string) {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+      relations: ['orders'],
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }
+    const order = restaurant.orders.find((order) => order.id === Number(orderId));
+    if (!order) {
+      throw new BadRequestException('Invalid orderId');
+    }
+    order.status = status;
+    return await this.restaurantRepository.save(restaurant);
   }
 }

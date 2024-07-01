@@ -19,7 +19,7 @@ import { ClientProxy } from '@nestjs/microservices';
 @Controller('restaurants')
 export class RestaurantsController {
   private readonly logger = new Logger(RestaurantsController.name);
-  constructor(@Inject('NATS_SERVICE') private natsClient: ClientProxy) {}
+  constructor(@Inject('NATS_SERVICE') private natsClient: ClientProxy) { }
 
   //------------------------------Menu Management ----------------------------------------------------------------
 
@@ -32,27 +32,15 @@ export class RestaurantsController {
     console.log('api-gatweway', restaurantId, createMenuItemDto);
     this.logger.log(
       '✅createRestaurantMenuItems method called with data: ' +
-        JSON.stringify(createMenuItemDto),
+      JSON.stringify(createMenuItemDto),
     );
     return this.natsClient.send(
       { cmd: 'add_menu_items' },
       { restaurantId, createMenuItemDto },
     );
   }
- 
-  //get restaurant all menu items
-  @Get('/:restaurantId/menu')
-  getRestaurantMenuItems(@Param('restaurantId') restaurantId: string) {
-    console.log('api-gatweway', restaurantId);
-    this.logger.log(
-      '✅getRestaurantMenuItems method called with restaurantId: ' +
-        restaurantId,
-    );
-    return this.natsClient.send(
-      { cmd: 'get_all_menu_items' },
-      { restaurantId },
-    );
-  }
+
+
 
   //get details of a specific menu item
   @Get('/:restaurantId/menu/:menuItemId')
@@ -63,9 +51,9 @@ export class RestaurantsController {
     console.log('api-gatweway', restaurantId, menuItemId);
     this.logger.log(
       '✅getRestaurantMenuItem method called with restaurantId: ' +
-        restaurantId +
-        ' menuItemId: ' +
-        menuItemId,
+      restaurantId +
+      ' menuItemId: ' +
+      menuItemId,
     );
     return this.natsClient.send(
       { cmd: 'get_menu_item' },
@@ -82,9 +70,9 @@ export class RestaurantsController {
     console.log('api-gatweway', restaurantId, menuItemId, updateMenuItemDto);
     this.logger.log(
       '✅updateRestaurantMenuItem method called with restaurantId: ' +
-        restaurantId +
-        ' menuItemId: ' +
-        menuItemId,
+      restaurantId +
+      ' menuItemId: ' +
+      menuItemId,
     );
     return this.natsClient.send(
       { cmd: 'update_menu_item' },
@@ -107,9 +95,9 @@ export class RestaurantsController {
     );
     this.logger.log(
       '✅updatePriceOfMenu method called with restaurantId: ' +
-        restaurantId +
-        ' menuItemId: ' +
-        menuItemId,
+      restaurantId +
+      ' menuItemId: ' +
+      menuItemId,
     );
     return this.natsClient.send(
       { cmd: 'update_price_of_menu' },
@@ -125,9 +113,9 @@ export class RestaurantsController {
     console.log('api-gatweway', restaurantId, menuItemId);
     this.logger.log(
       '✅deleteMenuItem method called with restaurantId: ' +
-        restaurantId +
-        ' menuItemId: ' +
-        menuItemId,
+      restaurantId +
+      ' menuItemId: ' +
+      menuItemId,
     );
     return this.natsClient.send(
       { cmd: 'delete_menu_item' },
@@ -149,9 +137,9 @@ export class RestaurantsController {
     );
     this.logger.log(
       '✅updateMenuItemStatus method called with restaurantId: ' +
-        restaurantId +
-        ' menuItemId: ' +
-        menuItemId,
+      restaurantId +
+      ' menuItemId: ' +
+      menuItemId,
     );
     return this.natsClient.send(
       { cmd: 'update_menu_item_status' },
@@ -182,12 +170,12 @@ export class RestaurantsController {
     console.log('api-gatweway', restaurantId, orderId);
     this.logger.log(
       '✅getRestaurantOrder method called with restaurantId: ' +
-        restaurantId +
-        ' orderId: ' +
-        orderId,
+      restaurantId +
+      ' orderId: ' +
+      orderId,
     );
     return this.natsClient.send(
-      { cmd: 'get_restaurant_order' },
+      { cmd: 'get_restaurant_order_by_id' },
       { restaurantId, orderId },
     );
   }
@@ -202,9 +190,9 @@ export class RestaurantsController {
     console.log('api-gatweway', restaurantId, orderId, updateOrderStatusDto);
     this.logger.log(
       '✅updateOrderStatus method called with restaurantId: ' +
-        restaurantId +
-        ' orderId: ' +
-        orderId,
+      restaurantId +
+      ' orderId: ' +
+      orderId,
     );
     return this.natsClient.send(
       { cmd: 'update_order_status' },
@@ -220,7 +208,7 @@ export class RestaurantsController {
     console.log('api-gatweway', restaurantId);
     this.logger.log(
       '✅getRestaurantOrderStatistics method called with restaurantId: ' +
-        restaurantId,
+      restaurantId,
     );
     return this.natsClient.send(
       { cmd: 'get_restaurant_order_statistics' },
@@ -233,7 +221,7 @@ export class RestaurantsController {
     console.log('api-gatweway', restaurantId);
     this.logger.log(
       '✅getRestaurantRevenueStatistics method called with restaurantId: ' +
-        restaurantId,
+      restaurantId,
     );
     return this.natsClient.send(
       { cmd: 'get_restaurant_revenue_statistics' },

@@ -92,7 +92,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
-      - postgres-data:/var/lib/postgresql/data2
+      - pg-data:/var/lib/postgresql/data
 volumes:
-  postgres-data:
+  pg-data:
     external: false

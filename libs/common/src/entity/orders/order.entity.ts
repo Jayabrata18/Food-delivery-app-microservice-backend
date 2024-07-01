@@ -35,6 +35,9 @@ export class Order {
     @Column()
     totalValue: number;
 
+    @Column({ default: 'cooking' })
+    status: string;
+
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
