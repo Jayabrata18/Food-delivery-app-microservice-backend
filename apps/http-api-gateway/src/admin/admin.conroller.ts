@@ -58,14 +58,14 @@ export class AdminController {
   //--------------------Restaurant Management--------------------
 
   //get all restaurants
-  @Get('/get-all-restaurants')
+  @Get('/restaurants')
   getAllRestaurants() {
     console.log('api-gatweway');
     this.logger.log('getAllRestaurants method called');
     return this.natsClient.send({ cmd: 'get_all_restaurants' }, {});
   }
   //get restaurant by id
-  @Get('/get-restaurant/:restaurantId')
+  @Get('/restaurants/:restaurantId')
   getRestaurantById(@Param('restaurantId') restaurantId: string) {
     console.log('api-gatweway', restaurantId);
     this.logger.log(
@@ -90,7 +90,7 @@ export class AdminController {
     );
   }
   //update restaurant by id
-  @Put('/update-restaurant/:restaurantId')
+  @Put('/restaurants/:restaurantId')
   updateRestaurantById(
     @Param('restaurantId') restaurantId: string,
     @Body() updateRestaurantDto: CreateRestaurantDto,
@@ -105,7 +105,7 @@ export class AdminController {
     );
   }
   //delete restaurant by id
-  @Delete('/delete-restaurant/:restaurantId')
+  @Delete('/restaurants/:restaurantId')
   deleteRestaurantById(@Param('restaurantId') restaurantId: string) {
     console.log('api-gatweway', restaurantId);
     this.logger.log(

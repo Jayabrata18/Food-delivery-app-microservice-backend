@@ -29,10 +29,49 @@ export class RestaurantsMicroserviceController {
   async getAllRestaurants() {
     this.logger.log('Received get all restaurants request');
     try {
-      const restaurants = await this.restaurantsService.getAllRestaurants();
-      return { message: 'All restaurants fetched successfully', restaurants };
+      const {restaurants, count} = await this.restaurantsService.getAllRestaurants();
+      return { message: 'All restaurants fetched successfully', restaurants, count };
     } catch (error) {
       this.logger.error('Error fetching all restaurants', error.stack);
+      throw error;
+    }
+  }
+  //get-restaurant-by-id
+  @MessagePattern({ cmd: 'get_restaurant_by_id' })
+  async getRestaurantById(@Payload() data: { restaurantId: string }) {
+    this.logger.log('Received get restaurant by id request');
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
+    try {
+      const restaurant = await this.restaurantsService.getRestaurantById(data.restaurantId);
+      return { message: 'Restaurant fetched successfully', restaurant };
+    } catch (error) {
+      this.logger.error('Error fetching restaurant', error.stack);
+      throw error;
+    }
+  }
+  //update-restaurant-by-id
+  @MessagePattern({ cmd: 'update_restaurant_by_id' })
+  async updateRestaurantById(@Payload() data: { restaurantId: string, updateRestaurantDto: CreateRestaurantDto }) {
+    this.logger.log('Received update restaurant by id request');
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
+    try {
+      const restaurant = await this.restaurantsService.updateRestaurantById(data.restaurantId, data.updateRestaurantDto);
+      return { message: 'Restaurant updated successfully', restaurant };
+    } catch (error) {
+      this.logger.error('Error updating restaurant', error.stack);
+      throw error;
+    }
+  }
+  //delete-restaurant-by-id
+  @MessagePattern({ cmd: 'delete_restaurant_by_id' })
+  async deleteRestaurantById(@Payload() data: { restaurantId: string }) {
+    this.logger.log('Received delete restaurant by id request');
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
+    try {
+      const restaurant = await this.restaurantsService.deleteRestaurantById(data.restaurantId);
+      return { message: 'Restaurant deleted successfully', restaurant };
+    } catch (error) {
+      this.logger.error('Error deleting restaurant', error.stack);
       throw error;
     }
   }

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { User } from '@app/common/entity/users/create-users.entity';
 import { LoginUserDto } from '@app/common';
 import * as bcrypt from 'bcrypt';
+import { UpdateUserDto } from '@app/common/dtos/users/update-user.dto';
 @Injectable()
 export class UsersMicroserviceService {
   constructor(
@@ -30,5 +31,36 @@ export class UsersMicroserviceService {
       throw new UnauthorizedException('Password not match');
     }
     return user;
+  }
+  //get all users
+  async getAllUsers(): Promise<{ users: User[], count: number }> {
+    const [users, count] = await this.userRepository.findAndCount();
+    return { users, count };
+  }
+  //get user by id
+  async getUserById(userId: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { userId: userId } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
+  //delete user by id
+  async deleteUserById(userId: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { userId: userId } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    await this.userRepository.delete({ userId: userId });
+    return user;
+  }
+  //update user by id
+  async updateUserById(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { userId: userId } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    await this.userRepository.update({ userId: userId }, updateUserDto);
+    return await this.userRepository.findOne({ where: { userId: userId } });
   }
 }

@@ -10,8 +10,11 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class RestaurantsMicroserviceService {
   constructor(
-    @InjectRepository(Restaurant) private readonly restaurantRepository: Repository<Restaurant>,
-    @InjectRepository(MenuItems) private readonly menuItemRepository: Repository<MenuItems>) { }
+    @InjectRepository(Restaurant)
+    private readonly restaurantRepository: Repository<Restaurant>,
+    @InjectRepository(MenuItems)
+    private readonly menuItemRepository: Repository<MenuItems>,
+  ) {}
 
   //create-restaurant
   createRestaurant(restaurantDto: CreateRestaurantDto) {
@@ -19,17 +22,54 @@ export class RestaurantsMicroserviceService {
     return this.restaurantRepository.save(newRestaurant);
   }
   //get all-restaurants
-  async getAllRestaurants() {
-    return await this.restaurantRepository.find();
+  async getAllRestaurants(): Promise<{
+    restaurants: Restaurant[];
+    count: number;
+  }> {
+    const [restaurants, count] = await this.restaurantRepository.findAndCount();
+    return { restaurants, count };
+  }
+  //get-restaurant-by-id
+  async getRestaurantById(restaurantId: string) {
+    return await this.restaurantRepository.findOne({ where: { restaurantId } });
+  }
+  //update-restaurant-by-id
+  async updateRestaurantById(
+    restaurantId: string,
+    restaurantDto: CreateRestaurantDto,
+  ) {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }
+    Object.assign(restaurant, restaurantDto);
+    return await this.restaurantRepository.save(restaurant);
+  }
+  //delete-restaurant-by-id
+  async deleteRestaurantById(restaurantId: string) {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { restaurantId },
+    });
+    if (!restaurant) {
+      throw new BadRequestException('Invalid restaurantId');
+    }
+    return await this.restaurantRepository.remove(restaurant);
   }
 
   //add-items
   async createRestaurantMenuItems(menuItemDto: CreateMenuItemDto) {
-    const restaurant = await this.restaurantRepository.findOneBy({ restaurantId: menuItemDto.restaurantId });
+    const restaurant = await this.restaurantRepository.findOneBy({
+      restaurantId: menuItemDto.restaurantId,
+    });
     if (!restaurant) {
       throw new BadRequestException('Invalid restaurantId');
     }
-    const newMenuItem = this.menuItemRepository.create({ ...menuItemDto, restaurant });
+    const newMenuItem = this.menuItemRepository.create({
+      ...menuItemDto,
+      restaurant,
+    });
     return this.menuItemRepository.save(newMenuItem);
   }
   //get-restaurant-menu-items
@@ -43,10 +83,12 @@ export class RestaurantsMicroserviceService {
     } else {
       return restaurant.menuItems;
     }
-
   }
   //update-restaurant-menu-items
-  async updateRestaurantMenuItems(restaurantId: string, menuItemDto: UpdateMenuItemDto) {
+  async updateRestaurantMenuItems(
+    restaurantId: string,
+    menuItemDto: UpdateMenuItemDto,
+  ) {
     const restaurant = await this.restaurantRepository.findOne({
       where: { restaurantId },
       relations: ['menuItems'],
@@ -54,12 +96,13 @@ export class RestaurantsMicroserviceService {
     if (!restaurant) {
       throw new BadRequestException('Invalid restaurantId');
     }
-    const menuItem = restaurant.menuItems.find((item) => item.id === Number(menuItemDto.menuItemId));
+    const menuItem = restaurant.menuItems.find(
+      (item) => item.id === Number(menuItemDto.menuItemId),
+    );
     if (!menuItem) {
       throw new BadRequestException('Invalid menuItemId');
     }
     Object.assign(menuItem, menuItemDto);
     return await this.menuItemRepository.save(menuItem);
-
   }
 }
