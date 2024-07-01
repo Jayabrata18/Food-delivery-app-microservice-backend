@@ -31,28 +31,28 @@ HTTP_PORT=3000
 
 User Management
 
-GET /admin/users
-POST /admin/users x
-GET /admin/users/{id}
-PUT /admin/users/{id}
-DELETE /admin/users/{id}
+GET /admin/users✅
+POST /admin/users x✅
+GET /admin/users/{id}✅
+PUT /admin/users/{id}✅
+DELETE /admin/users/{id}✅
 
 
 Restaurant Management
 
-GET /admin/restaurants
-POST /admin/restaurants
-GET /admin/restaurants/{id}
-PUT /admin/restaurants/{id}
-DELETE /admin/restaurants/{id}
+GET /admin/restaurants✅
+POST /admin/restaurants✅
+GET /admin/restaurants/{id}✅
+PUT /admin/restaurants/{id}✅
+DELETE /admin/restaurants/{id}✅
 
 Delivery Partner Management
 
-GET /admin/delivery-partners
-POST /admin/delivery-partners
-GET /admin/delivery-partners/{id}
-PUT /admin/delivery-partners/{id}
-DELETE /admin/delivery-partners/{id}
+GET /admin/delivery-partners✅
+POST /admin/delivery-partners✅
+GET /admin/delivery-partners/{id}✅
+PUT /admin/delivery-partners/{id}✅
+DELETE /admin/delivery-partners/{id}✅
 
 Analytics
 

@@ -3,7 +3,7 @@ import { DeliveryPartnersController } from './delivery-partners.controller';
 import { DeliveryPartnersService } from './delivery-partners.service';
 import { NatsClientModule } from '@app/common/nats-client/nats-client.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
 import { pinoDevConfig, pinoProdConfig } from '@app/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

@@ -2,7 +2,7 @@ import { Logger, Module } from '@nestjs/common';
 import { NatsClientModule } from '@app/common/nats-client/nats-client.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
 import { pinoDevConfig, pinoProdConfig } from '@app/common';
 import { RestaurantModue } from './restaurants/restaurants.module';
