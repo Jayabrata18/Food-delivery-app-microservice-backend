@@ -116,6 +116,48 @@ export class RestaurantsMicroserviceController {
       throw error;
     }
   }
+  //find restaurants-controllers
+
+  //find restaurants by pincode
+  @MessagePattern({ cmd: 'find_restaurants_by_pincode' })
+  async findRestaurantsByPincode(@Payload() data: { pincode: number }) {
+    this.logger.log('Received find restaurants by pincode request');
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
+    try {
+      const restaurants = await this.restaurantsService.findRestaurantsByPincode(data.pincode);
+      return { message: 'Restaurants fetched successfully', restaurants };
+    } catch (error) {
+      this.logger.error('Error fetching restaurants', error.stack);
+      throw error;
+    }
+  }
+  //find restaurants by name
+  @MessagePattern({ cmd: 'find_restaurants_by_name' })
+  async findRestaurantsByName(@Payload() data: { name: string }) {
+    this.logger.log('Received find restaurants by name request');
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
+    try {
+      const restaurants = await this.restaurantsService.findRestaurantsByName(data.name);
+      return { message: 'Restaurants fetched successfully', restaurants };
+    } catch (error) {
+      this.logger.error('Error fetching restaurants', error.stack);
+      throw error;
+    }
+  }
+  //find restaurants by menuItem
+  @MessagePattern({ cmd: 'find_restaurants_by_menu_item' })
+  async findRestaurantsByMenuItem(@Payload() data: { menuItem: string }) {
+    this.logger.log('Received find restaurants by menuItem request');
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
+    try {
+      const restaurants = await this.restaurantsService.findRestaurantsByMenuItem(data.menuItem);
+      return { message: 'Restaurants fetched successfully', restaurants };
+    } catch (error) {
+      this.logger.error('Error fetching restaurants', error.stack);
+      throw error;
+    }
+  }
+
 
 
 }

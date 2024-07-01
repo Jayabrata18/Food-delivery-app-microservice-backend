@@ -5,7 +5,7 @@ import { Restaurant } from '@app/common/entity';
 import { MenuItems } from '@app/common/entity/restaurant/menuItems.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Like, Repository } from 'typeorm';
 
 @Injectable()
 export class RestaurantsMicroserviceService {
@@ -14,7 +14,7 @@ export class RestaurantsMicroserviceService {
     private readonly restaurantRepository: Repository<Restaurant>,
     @InjectRepository(MenuItems)
     private readonly menuItemRepository: Repository<MenuItems>,
-  ) {}
+  ) { }
 
   //create-restaurant
   createRestaurant(restaurantDto: CreateRestaurantDto) {
@@ -104,5 +104,30 @@ export class RestaurantsMicroserviceService {
     }
     Object.assign(menuItem, menuItemDto);
     return await this.menuItemRepository.save(menuItem);
+  }
+
+  //find-restaurants-service
+
+  // Find restaurants by pincode within a 5-pincode radius
+  async findRestaurantsByPincode(pincode: number) {
+    const radius = 5;
+    const startPincode = pincode - radius;
+    const endPincode = pincode + radius;
+
+    return await this.restaurantRepository.find({
+      where: { pincode: Between(startPincode, endPincode) },
+    });
+  }
+  // Find restaurants by name
+  async findRestaurantsByName(name: string) {
+    return await this.restaurantRepository.find({
+      where: { restaurantName: Like(`%${name}%`) },
+    });
+  }
+  // Find restaurants by menu item
+  async findRestaurantsByMenuItem(menuItem: string) {
+    return await this.menuItemRepository.find({
+      where: { menuItemName: Like(`%${menuItem}%`) },
+    });
   }
 }

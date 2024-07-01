@@ -45,6 +45,14 @@ export class UsersMicroserviceService {
     }
     return user;
   }
+  //get user by email
+  async getUserByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { email: email } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
   //delete user by id
   async deleteUserById(userId: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { userId: userId } });

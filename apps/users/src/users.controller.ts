@@ -81,6 +81,20 @@ export class UsersMicroserviceController {
       throw error;
     }
   }
+  //get user by email
+  @MessagePattern({ cmd: 'get_user_by_email' })
+  async getUserByEmail(@Payload() data: { email: string }) {
+    this.logger.log('Received get user by email request');
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
+    try {
+      const user = await this.userService.getUserByEmail(data.email);
+      this.logger.log(`User fetched successfully with email: ${user.email}`);
+      return { message: `User fetched successfully with email: ${user.email}`, user };
+    } catch (error) {
+      this.logger.error('Error fetching user', error.stack);
+      throw error;
+    }
+  }
   //delete user by id
   @MessagePattern({ cmd: 'delete_user_by_id' })
   async deleteUserById(@Payload() data: { userId: string }) {

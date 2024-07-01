@@ -34,6 +34,13 @@ export class AdminController {
     this.logger.log('✅getUserById method called with userId: ' + userId);
     return this.natsClient.send({ cmd: 'get_user_by_id' }, { userId });
   }
+  //get user by email
+  @Get('/users/email/:email')
+  getUserByEmail(@Param('email') email: string) {
+    console.log('api-gatweway', email);
+    this.logger.log('✅getUserByEmail method called with email: ' + email);
+    return this.natsClient.send({ cmd: 'get_user_by_email' }, { email });
+  }
   //delete user by id
   @Delete('/users/:userId')
   deleteUserById(@Param('userId') userId: string) {
