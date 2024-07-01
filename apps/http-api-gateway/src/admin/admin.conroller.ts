@@ -1,3 +1,4 @@
+import { CreateRestaurantDto } from '@app/common';
 import { DeliveryPartnerDto } from '@app/common/dtos/delivery-partners/create-delivery-partners.dto';
 import { UpdateUserDto } from '@app/common/dtos/users/update-user.dto';
 import {
@@ -16,7 +17,7 @@ import { ClientProxy } from '@nestjs/microservices';
 @Controller('admin')
 export class AdminController {
   private readonly logger = new Logger(AdminController.name);
-  constructor(@Inject('NATS_SERVICE') private natsClient: ClientProxy) {}
+  constructor(@Inject('NATS_SERVICE') private natsClient: ClientProxy) { }
 
   //----------------------User Management----------------------
 
@@ -77,11 +78,11 @@ export class AdminController {
   }
   //create restaurant
   @Post('/create-restaurant')
-  createRestaurant(@Body() createRestaurantDto: any) {
+  createRestaurant(@Body() createRestaurantDto: CreateRestaurantDto) {
     console.log('api-gatweway', createRestaurantDto);
     this.logger.log(
       '✅createRestaurant method called with data: ' +
-        JSON.stringify(createRestaurantDto),
+      JSON.stringify(createRestaurantDto),
     );
     return this.natsClient.send(
       { cmd: 'create_restaurant' },
@@ -92,7 +93,7 @@ export class AdminController {
   @Put('/update-restaurant/:restaurantId')
   updateRestaurantById(
     @Param('restaurantId') restaurantId: string,
-    @Body() updateRestaurantDto: any,
+    @Body() updateRestaurantDto: CreateRestaurantDto,
   ) {
     console.log('api-gatweway', restaurantId, updateRestaurantDto);
     this.logger.log(
@@ -124,7 +125,7 @@ export class AdminController {
     console.log('api-gatweway', createDeliveryPartnerDto);
     this.logger.log(
       '✅createDeliveryPartner method called with data: ' +
-        JSON.stringify(createDeliveryPartnerDto),
+      JSON.stringify(createDeliveryPartnerDto),
     );
     return this.natsClient.send(
       { cmd: 'create_delivery_partner' },
@@ -148,7 +149,7 @@ export class AdminController {
     console.log('api-gatweway', deliveryPartnerId);
     this.logger.log(
       '✅getDeliveryPartnerById method called with deliveryPartnerId: ' +
-        deliveryPartnerId,
+      deliveryPartnerId,
     );
     return this.natsClient.send(
       { cmd: 'get_delivery_partner_by_id' },
@@ -159,15 +160,16 @@ export class AdminController {
   @Put('/update-delivery-partner/:deliveryPartnerId')
   updateDeliveryPartnerById(
     @Param('deliveryPartnerId') deliveryPartnerId: string,
+    @Body() updateDeliveryPartnerDto: DeliveryPartnerDto,
   ) {
-    console.log('api-gatweway', deliveryPartnerId);
+    console.log('api-gatweway', updateDeliveryPartnerDto);
     this.logger.log(
       '✅updateDeliveryPartnerById method called with deliveryPartnerId: ' +
-        deliveryPartnerId,
+      deliveryPartnerId,
     );
     return this.natsClient.send(
       { cmd: 'update_delivery_partner_by_id' },
-      { deliveryPartnerId },
+      { deliveryPartnerId, updateDeliveryPartnerDto },
     );
   }
   //delete delivery partner by id
@@ -178,7 +180,7 @@ export class AdminController {
     console.log('api-gatweway', deliveryPartnerId);
     this.logger.log(
       '✅deleteDeliveryPartnerById method called with deliveryPartnerId: ' +
-        deliveryPartnerId,
+      deliveryPartnerId,
     );
     return this.natsClient.send(
       { cmd: 'delete_delivery_partner_by_id' },

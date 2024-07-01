@@ -1,8 +1,8 @@
 {
-  "name": "odering",
+  "name": "FoodOrderingSystem",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Food Delivery Microservices",
+  "author": "JOY",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

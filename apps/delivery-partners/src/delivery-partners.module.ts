@@ -12,6 +12,8 @@ import { User } from '@app/common/entity';
 import { Restaurant } from '@app/common/entity/restaurant/create-restrudent.entity';
 import { OrderItem } from '@app/common/entity/orders/orderItem.entity';
 import { MenuItems } from '@app/common/entity/restaurant/menuItems.entity';
+import { DeliveryPartner } from '@app/common/entity/delivery-partners/delivery-partners.entity';
+import { DeliveryPartnerReview } from '@app/common/entity/delivery-partners/review-partner.entity';
 
 
 @Module({
@@ -48,15 +50,15 @@ import { MenuItems } from '@app/common/entity/restaurant/menuItems.entity';
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DB'),
-        entities: [User, Restaurant, MenuItems, Order, OrderItem],
+        entities: [User, Restaurant, MenuItems, Order, OrderItem, User, Restaurant, MenuItems, Order, OrderItem, DeliveryPartner, DeliveryPartnerReview],
         synchronize: true,  // Set to false in production
         dropSchema: true,
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User, Restaurant, MenuItems, Order, OrderItem]),
+    TypeOrmModule.forFeature([User, Restaurant, MenuItems, Order, OrderItem, DeliveryPartner, DeliveryPartnerReview]),
   ],
   controllers: [DeliveryPartnersController],
   providers: [DeliveryPartnersService],
 })
-export class DeliveryPartnersModule {}
+export class DeliveryPartnersModule { }

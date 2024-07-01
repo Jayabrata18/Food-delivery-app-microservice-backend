@@ -3,6 +3,7 @@ import { User } from '../users/create-users.entity';
 import { OrderItem } from './orderItem.entity';
 import * as crypto from 'crypto';
 import { Restaurant } from '../restaurant/create-restrudent.entity';
+import { DeliveryPartner } from '../delivery-partners/delivery-partners.entity';
 
 @Entity()
 export class Order {
@@ -27,6 +28,9 @@ export class Order {
 
     @OneToMany(() => OrderItem, (orderItem: { order: any; }) => orderItem.order, { cascade: true })
     items: OrderItem[];
+
+    @ManyToOne(() => DeliveryPartner, deliveryPartner => deliveryPartner.allOrders)
+    deliveryPartner: DeliveryPartner;
 
     @Column()
     totalValue: number;

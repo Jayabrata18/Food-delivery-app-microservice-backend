@@ -57,6 +57,9 @@ services:
        - ./apps/restaurants/src:/usr/src/apps/apps/restaurants/src
        - ./libs:/usr/src/apps/libs
        - /usr/src/apps/node_modules  
+    depends_on:
+      - nats
+      - postgres
   delivery-partners:
     build:
       context: .
@@ -68,7 +71,10 @@ services:
     volumes:
        - ./apps/delivery-partners/src:/usr/src/apps/apps/delivery-partners/src
        - ./libs:/usr/src/apps/libs
-       - /usr/src/apps/node_modules     
+       - /usr/src/apps/node_modules   
+    depends_on:
+      - nats
+      - postgres
   nats:
     image: nats:latest
     ports:
@@ -86,7 +92,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
-      - postgres-data:/var/lib/postgresql/data1 
+      - postgres-data:/var/lib/postgresql/data2
 volumes:
   postgres-data:
     external: false
