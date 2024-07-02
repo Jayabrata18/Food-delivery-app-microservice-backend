@@ -1,4 +1,11 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from '@app/common/dtos/users/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -8,14 +15,30 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from '@app/common/dtos/users/update-user.dto';
 @Injectable()
 export class UsersMicroserviceService {
+  private logger = new Logger('UsersMicroserviceService');
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) { }
+  ) {}
   //signup
-  createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    const { email } = createUserDto;
+    // Check if the user with the given email already exists
+    const existingUser = await this.userRepository.findOne({
+      where: { email },
+    });
+    if (existingUser) {
+      throw new ConflictException('User with the given email already exists');
+      // this.logger.error('User with the given email already exists');
+    }
     const newUser = this.userRepository.create(createUserDto);
-    return this.userRepository.save(newUser);
+    try {
+      return await this.userRepository.save(newUser);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'An error occurred while creating the user',
+      );
+    }
   }
   //login
   async loginUser(loginUserDto: LoginUserDto): Promise<User> {
@@ -33,13 +56,15 @@ export class UsersMicroserviceService {
     return user;
   }
   //get all users
-  async getAllUsers(): Promise<{ users: User[], count: number }> {
+  async getAllUsers(): Promise<{ users: User[]; count: number }> {
     const [users, count] = await this.userRepository.findAndCount();
     return { users, count };
   }
   //get user by id
   async getUserById(userId: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { userId: userId } });
+    const user = await this.userRepository.findOne({
+      where: { userId: userId },
+    });
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -55,7 +80,9 @@ export class UsersMicroserviceService {
   }
   //delete user by id
   async deleteUserById(userId: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { userId: userId } });
+    const user = await this.userRepository.findOne({
+      where: { userId: userId },
+    });
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -63,8 +90,13 @@ export class UsersMicroserviceService {
     return user;
   }
   //update user by id
-  async updateUserById(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { userId: userId } });
+  async updateUserById(
+    userId: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { userId: userId },
+    });
     if (!user) {
       throw new NotFoundException('User not found');
     }

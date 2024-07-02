@@ -1,5 +1,7 @@
 export * from './users/create-users.entity'
 export * from './restaurant/create-restrudent.entity'
+export * from './restaurant/menuItems.entity'
 export * from './orders/order.entity'
 export * from './orders/orderItem.entity'
-
+export * from './delivery-partners/delivery-partners.entity'
+export * from './delivery-partners/review-partner.entity'
