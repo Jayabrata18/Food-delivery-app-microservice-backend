@@ -1,6 +1,6 @@
 FROM node:18 As development
 
-WORKDIR /usr/src/apps
+WORKDIR /usr/src/app
 
 # Install NestJS CLI
 RUN npm install -g @nestjs/cli 
