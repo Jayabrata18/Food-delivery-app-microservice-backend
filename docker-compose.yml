@@ -17,11 +17,13 @@ services:
     depends_on:
       - nats
       - postgres
+      - prometheus
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000/health || (echo 'HTTP API Gateway is down' && exit 1)"]
       interval: 30s
       timeout: 10s
       retries: 3
+      
   users_microservice:
     build:
       context: .
@@ -51,6 +53,7 @@ services:
     depends_on:
       - nats
       - postgres
+
   restaurants_microservice:
     build:
       context: .
@@ -66,6 +69,7 @@ services:
     depends_on:
       - nats
       - postgres
+
   delivery-partners:
     build:
       context: .
@@ -81,6 +85,7 @@ services:
     depends_on:
       - nats
       - postgres
+
   nats:
     image: nats:latest
     ports:
@@ -93,6 +98,7 @@ services:
     #   timeout: 10s
     #   retries: 3
     # does not work
+
   # postgres database
   postgres:
     restart: always
@@ -111,6 +117,24 @@ services:
     #   timeout: 10s
     #   retries: 3  
     # does not work
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9095:9090"
+    volumes:
+      - ./prometheus.yml:/home/jayabrata180402/project-code/Food-delivery-app-microservice-backend/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/home/jayabrata180402/project-code/Food-delivery-app-microservice-backend/grafana/provisioning:/etc/grafana/provisioning
+  
 volumes:
   postgres-data:
     external: false
+  grafana-data:  

@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+   - job_name: http-api-gateway
+     scrape_interval: 15s
+     scrape_timeout: 10s
+     metrics_path: /metrics
+     static_configs:
+      - targets:
+          - 'prometheus:9090'
+          - 'app:3000'

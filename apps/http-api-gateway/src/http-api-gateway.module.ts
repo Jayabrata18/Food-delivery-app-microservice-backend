@@ -8,6 +8,7 @@ import { pinoDevConfig, pinoProdConfig } from '@app/common';
 import { RestaurantModue } from './restaurants/restaurants.module';
 import { OrdersModule } from './orders/orders.module';
 import { AdminModule } from './admin/admin.module';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 @Module({
   imports: [NatsClientModule, UsersModule, RestaurantModue, OrdersModule, AdminModule,
     ConfigModule.forRoot({
@@ -29,6 +30,9 @@ import { AdminModule } from './admin/admin.module';
           ? pinoProdConfig()
           : pinoDevConfig(),
       inject: [ConfigService],
+    }),
+    PrometheusModule.register({
+      path: "/metrics",
     }),
 
     // NatsJetStreamTransport.registerAsync({
