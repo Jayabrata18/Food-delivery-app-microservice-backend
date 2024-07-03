@@ -1,7 +1,7 @@
- #author: jayabrata180402@gmail.com
+#author: jayabrata180402@gmail.com
 services:
   http-api-gateway:
-    build: 
+    build:
       context: .
       dockerfile: ./apps/http-api-gateway/Dockerfile
       target: development
@@ -9,16 +9,21 @@ services:
     env_file:
       - ./apps/http-api-gateway/.env
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
-       - ./apps/http-api-gateway/src:/usr/src/apps/apps/http-api-gateway/src
-       - ./libs:/usr/src/apps/libs
-       - /usr/src/apps/node_modules
+      - ./apps/http-api-gateway/src:/usr/src/apps/apps/http-api-gateway/src
+      - ./libs:/usr/src/apps/libs
+      - /usr/src/apps/node_modules
     depends_on:
       - nats
       - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/health || (echo 'HTTP API Gateway is down' && exit 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
   users_microservice:
-    build: 
+    build:
       context: .
       dockerfile: ./apps/users/Dockerfile
       target: development
@@ -26,27 +31,28 @@ services:
     env_file:
       - ./apps/users/.env
     volumes:
-       - ./apps/users/src:/usr/src/apps/apps/users/src
-       - ./libs:/usr/src/apps/libs
-       - /usr/src/apps/node_modules
+      - ./apps/users/src:/usr/src/apps/apps/users/src
+      - ./libs:/usr/src/apps/libs
+      - /usr/src/apps/node_modules
     depends_on:
       - nats
       - postgres
+
   oders_microservice:
-    build: 
+    build:
       context: .
       dockerfile: ./apps/orders/Dockerfile
       target: development
     command: npm run start:dev oders
     volumes:
-       - ./apps/orders/src:/usr/src/apps/apps/orders/src
-       - ./libs:/usr/src/apps/libs
-       - /usr/src/apps/node_modules
+      - ./apps/orders/src:/usr/src/apps/apps/orders/src
+      - ./libs:/usr/src/apps/libs
+      - /usr/src/apps/node_modules
     depends_on:
       - nats
       - postgres
   restaurants_microservice:
-    build: 
+    build:
       context: .
       dockerfile: ./apps/restaurants/Dockerfile
       target: development
@@ -54,45 +60,57 @@ services:
     env_file:
       - ./apps/restaurants/.env
     volumes:
-       - ./apps/restaurants/src:/usr/src/apps/apps/restaurants/src
-       - ./libs:/usr/src/apps/libs
-       - /usr/src/apps/node_modules  
+      - ./apps/restaurants/src:/usr/src/apps/apps/restaurants/src
+      - ./libs:/usr/src/apps/libs
+      - /usr/src/apps/node_modules
     depends_on:
       - nats
       - postgres
   delivery-partners:
     build:
       context: .
-      dockerfile: ./apps/delivery-partners/Dockerfile     
+      dockerfile: ./apps/delivery-partners/Dockerfile
       target: development
     command: npm run start:dev delivery-partners
     env_file:
       - ./apps/delivery-partners/.env
     volumes:
-       - ./apps/delivery-partners/src:/usr/src/apps/apps/delivery-partners/src
-       - ./libs:/usr/src/apps/libs
-       - /usr/src/apps/node_modules   
+      - ./apps/delivery-partners/src:/usr/src/apps/apps/delivery-partners/src
+      - ./libs:/usr/src/apps/libs
+      - /usr/src/apps/node_modules
     depends_on:
       - nats
       - postgres
   nats:
     image: nats:latest
     ports:
-      - "4222:4222"
+      - '4222:4222'
     #   - '8222:8222'
     # command: -js
-# postgres database
+    # healthcheck:
+    #   test: ["CMD-SHELL", "nats-ping -s nats://localhost:4222 || (echo 'NATS is down' && exit 1)"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    # does not work
+  # postgres database
   postgres:
     restart: always
     image: postgres:latest
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data5
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U postgres || (echo 'Postgres is down' && exit 1)"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3  
+    # does not work
 volumes:
   postgres-data:
     external: false
