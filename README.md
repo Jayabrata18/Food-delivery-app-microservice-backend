@@ -37,7 +37,7 @@ This setup ensures scalable, maintainable, and efficient service delivery, suppo
    yan install
    ```
 4. **Add env**
-   `   
+   ```   
 NODE_ENV= development
 NATS_URI=nats://nats
 POSTGRES_HOST=postgres
@@ -46,7 +46,7 @@ POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=postgres
 HTTP_PORT=3000
-    `
+    ```
 5. **Run the application**
    ```bash
    docker compose up --build -V
