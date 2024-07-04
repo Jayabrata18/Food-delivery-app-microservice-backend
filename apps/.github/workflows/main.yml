@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
+        ports:
+          - 3000:3000
+          - 3001:3000
+          - 4222:4222
+          - 5432:5432
+          - 9095:9090
+          - 3001:3001
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - grafana-data:/var/lib/grafana
+          - postgres-data:/var/lib/postgresql/data
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build and run Docker Compose services
+        run: |
+          docker-compose -f docker-compose.yml up -d
+          docker-compose -f docker-compose.yml ps
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Linting and Code Quality
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run test
+
+      - name: Stop Docker Compose services
+        run: docker-compose -f docker-compose.yml down
+
+
+  # volumes:
+  # postgres-data:
+  # grafana-data:
